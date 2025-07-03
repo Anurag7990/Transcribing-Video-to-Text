@@ -75,9 +75,6 @@ stack-data==0.6.3
 sympy==1.12
 threadpoolctl==3.2.0
 tiktoken==0.5.2
-torch==2.1.1+cu121
-torchaudio==2.1.1+cu121
-torchvision==0.16.1+cu121
 tornado==6.4
 tqdm==4.66.1
 traitlets==5.14.0
@@ -85,3 +82,4 @@ typing_extensions==4.4.0
 urllib3==2.1.0
 wcwidth==0.2.12
 Werkzeug==3.0.1
+

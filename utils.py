@@ -14,18 +14,26 @@ class GreedyCTCDecoder(torch.nn.Module):
         indices = [i for i in indices if i != self.blank]
         return "".join([self.labels[i] for i in indices])
 
-def load_wav2vec2_asr_model(model_path, device="cuda" if torch.cuda.is_available() else "cpu"):
+def load_wav2vec2_asr_model(device="cpu"):
+    """
+    Load the Wav2Vec2 ASR model on the specified device ('cpu' or 'cuda').
+    Default is 'cpu'.
+    """
     model = WAV2VEC2_ASR_BASE_960H.get_model().to(device)
-    model.load_state_dict(torch.load(model_path, map_location=device))
     model.eval()
     return model
 
-def transcribe_audio(model, audio_path):
+def transcribe_audio(model, audio_path, device="cpu"):
+    """
+    Transcribe audio using the given model and device ('cpu' or 'cuda').
+    Default is 'cpu'.
+    """
     waveform, sample_rate = torchaudio.load(audio_path)
     if sample_rate != WAV2VEC2_ASR_BASE_960H.sample_rate:
         waveform = torchaudio.functional.resample(waveform, sample_rate, WAV2VEC2_ASR_BASE_960H.sample_rate)
 
-    waveform = waveform.to("cuda" if torch.cuda.is_available() else "cpu")
+    waveform = waveform.to(device)
+    model = model.to(device)
 
     with torch.no_grad():
         emission, _ = model(waveform)
